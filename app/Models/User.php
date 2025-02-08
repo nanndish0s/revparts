@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use MongoDB\Laravel\Auth\User as MongoUser;
+use Laravel\Sanctum\HasApiTokens;
 use App\Models\Cart; // Add Cart model import
 
 class User extends MongoUser
 {
+    use HasApiTokens;
     use Notifiable;
 
     /**
@@ -15,6 +17,7 @@ class User extends MongoUser
      *
      * @var string
      */
+    protected $collection = 'users';
     protected $connection = 'mongodb';
 
     /**

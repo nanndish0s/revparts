@@ -79,11 +79,11 @@
                     </li>
                     <li class="text-gray-300">
                         <span class="block">Phone:</span>
-                        <a href="tel:+1234567890" class="text-indigo-400 hover:text-indigo-300">+1 (234) 567-890</a>
+                        <a href="tel:0771234567" class="text-indigo-400 hover:text-indigo-300">+1 (234) 567-890</a>
                     </li>
                     <li class="text-gray-300">
                         <span class="block">Address:</span>
-                        <p>123 Auto Parts Street<br>Mechanic City, MC 12345</p>
+                        <p>No. 388 Union Pl,<br>Colombo 00200</p>
                     </li>
                 </ul>
             </div>

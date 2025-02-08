@@ -61,7 +61,7 @@ Route::middleware([AdminMiddleware::class])->group(function () {
         ->name('admin.orders.update-status');
 
     // Product Routes
-    Route::get('/admin/products', [ProductController::class, 'index'])
+    Route::get('/admin/products', [ProductController::class, 'adminIndex'])
         ->name('admin.products.index');
     
     Route::get('/admin/products/create', [ProductController::class, 'create'])
@@ -78,6 +78,10 @@ Route::middleware([AdminMiddleware::class])->group(function () {
     
     Route::delete('/admin/products/{id}', [ProductController::class, 'destroy'])
         ->name('admin.products.destroy');
+});
+
+Route::get('/debug/images', function () {
+    return view('debug.image_test');
 });
 
 require __DIR__.'/auth.php';

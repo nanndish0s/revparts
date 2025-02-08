@@ -65,7 +65,7 @@
             <div class="bg-white overflow-hidden shadow-lg rounded-lg transition-all duration-300 hover:shadow-xl flex flex-col">
                 <div class="relative">
                     @if($product->product_image)
-                        <img src="{{ asset('storage/' . $product->product_image) }}" 
+                        <img src="{{ Storage::url($product->product_image) }}" 
                              alt="{{ $product->name }}" 
                              class="w-full h-64 object-cover">
                     @else

@@ -9,11 +9,11 @@
                         <!-- Left Side - Image -->
                         <div class="md:w-1/2 p-8">
                             @if($product->product_image)
-                                <img src="{{ asset('storage/' . $product->product_image) }}" 
+                                <img src="{{ Storage::url($product->product_image) }}" 
                                      alt="{{ $product->name }}" 
-                                     class="w-full h-[500px] object-cover rounded-lg shadow-md">
+                                     class="w-full h-auto rounded-lg shadow-md">
                             @else
-                                <div class="w-full h-[500px] bg-gray-200 flex items-center justify-center text-gray-500 rounded-lg">
+                                <div class="w-full h-64 bg-gray-200 flex items-center justify-center text-gray-500">
                                     No Image Available
                                 </div>
                             @endif

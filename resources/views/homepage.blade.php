@@ -26,52 +26,57 @@
     <section class="bg-gray-50 py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-extrabold text-gray-900">Featured Categories</h2>
-                <p class="mt-2 text-lg text-gray-600">Explore our most popular automotive parts</p>
+                <h2 class="text-3xl font-extrabold text-gray-900">Explore Our Categories</h2>
+                <p class="mt-2 text-lg text-gray-600">Find the perfect parts for your vehicle</p>
             </div>
             
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
                 @php
                     $categories = [
                         [
                             'name' => 'Engine Parts',
-                            'icon' => 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253',
+                            'description' => 'High-performance components',
                             'route' => 'products.index',
-                            'params' => ['category' => 'engine-parts']
+                            'params' => ['category' => 'engine-parts'],
+                            'bg_image' => '/images/categories/engine-parts.jpg'
                         ],
                         [
                             'name' => 'Brake System',
-                            'icon' => 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
+                            'description' => 'Safety and precision',
                             'route' => 'products.index',
-                            'params' => ['category' => 'brake-system']
+                            'params' => ['category' => 'brake-system'],
+                            'bg_image' => '/images/categories/brake-system.jpg'
                         ],
                         [
                             'name' => 'Electrical',
-                            'icon' => 'M13 10V3L4 14h7v7l9-11h-7z',
+                            'description' => 'Advanced electrical systems',
                             'route' => 'products.index',
-                            'params' => ['category' => 'electrical']
+                            'params' => ['category' => 'electrical'],
+                            'bg_image' => '/images/categories/electrical.jpg'
                         ],
                         [
                             'name' => 'Suspension',
-                            'icon' => 'M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z',
+                            'description' => 'Smooth ride technology',
                             'route' => 'products.index',
-                            'params' => ['category' => 'suspension']
+                            'params' => ['category' => 'suspension'],
+                            'bg_image' => '/images/categories/suspension.jpg'
                         ]
                     ];
                 @endphp
 
                 @foreach($categories as $category)
                     <a href="{{ route($category['route'], $category['params']) }}" 
-                       class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
-                        <div class="text-center">
-                            <div class="mx-auto h-12 w-12 text-indigo-600">
-                                <svg class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $category['icon'] }}"/>
-                                </svg>
-                            </div>
-                            <h3 class="mt-4 text-lg font-medium text-gray-900">{{ $category['name'] }}</h3>
-                            <p class="mt-2 text-sm text-gray-500">
-                                Browse our selection of {{ strtolower($category['name']) }}
+                       class="relative overflow-hidden rounded-xl shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-xl group">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-50 transition duration-300"></div>
+                        <img src="{{ $category['bg_image'] }}" 
+                             alt="{{ $category['name'] }}" 
+                             class="w-full h-64 object-cover absolute inset-0 z-0">
+                        <div class="relative z-10 p-6 text-white text-center h-64 flex flex-col justify-center">
+                            <h3 class="text-2xl font-bold mb-2 transform transition duration-300 group-hover:scale-105">
+                                {{ $category['name'] }}
+                            </h3>
+                            <p class="text-sm opacity-0 group-hover:opacity-100 transition duration-300">
+                                {{ $category['description'] }}
                             </p>
                         </div>
                     </a>

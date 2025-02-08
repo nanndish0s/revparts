@@ -1,126 +1,121 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Edit Product') }}: {{ $product->name }}
-            </h2>
-            <div class="space-x-2">
-                <a href="{{ route('admin.products.index') }}" class="text-blue-500 hover:underline">
-                    Back to Products
-                </a>
-                <a href="{{ route('admin.dashboard') }}" class="text-green-500 hover:underline">
-                    Dashboard
-                </a>
-            </div>
-        </div>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <form action="{{ route('admin.products.update', $product->_id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
-                    @csrf
-                    @method('PUT')
+@section('content')
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-2xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Edit Product: {{ $product->name }}</h2>
+            
+            @if ($errors->any())
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Left Column -->
-                        <div>
-                            <!-- Product Name -->
-                            <div class="mb-4">
-                                <x-input-label for="name" :value="__('Product Name')" />
-                                <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" 
-                                    value="{{ old('name', $product->name) }}" required />
-                                <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                            </div>
+            <form action="{{ route('admin.products.update', $product->_id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                @csrf
+                @method('PUT')
 
-                            <!-- Description -->
-                            <div class="mb-4">
-                                <x-input-label for="description" :value="__('Description')" />
-                                <textarea id="description" name="description" 
-                                    class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" 
-                                    rows="4">{{ old('description', $product->description) }}</textarea>
-                                <x-input-error :messages="$errors->get('description')" class="mt-2" />
-                            </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {{-- Left Column --}}
+                    <div>
+                        {{-- Product Name --}}
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 font-bold mb-2">Product Name</label>
+                            <input type="text" name="name" id="name" 
+                                   value="{{ old('name', $product->name) }}" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                                   required>
+                        </div>
 
-                            <!-- Category -->
-                            <div class="mb-4">
-                                <x-input-label for="category" :value="__('Category')" />
-                                <select id="category" name="category" 
-                                    class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" 
+                        {{-- Description --}}
+                        <div class="mb-4">
+                            <label for="description" class="block text-gray-700 font-bold mb-2">Description</label>
+                            <textarea name="description" id="description" 
+                                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                                      rows="4">{{ old('description', $product->description) }}</textarea>
+                        </div>
+
+                        {{-- Category --}}
+                        <div class="mb-4">
+                            <label for="category" class="block text-gray-700 font-bold mb-2">Category</label>
+                            <select name="category" id="category" 
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
                                     required>
-                                    <option value="">Select Category</option>
-                                    <option value="engine-parts" 
-                                        {{ old('category', $product->category) == 'engine-parts' ? 'selected' : '' }}>
-                                        Engine Parts
+                                <option value="">Select Category</option>
+                                @php
+                                    $categories = [
+                                        'engine-parts' => 'Engine Parts', 
+                                        'brake-system' => 'Brake System', 
+                                        'electrical' => 'Electrical', 
+                                        'suspension' => 'Suspension', 
+                                        'transmission' => 'Transmission'
+                                    ];
+                                @endphp
+                                @foreach($categories as $value => $label)
+                                    <option value="{{ $value }}" 
+                                            {{ old('category', $product->category) == $value ? 'selected' : '' }}>
+                                        {{ $label }}
                                     </option>
-                                    <option value="brake-system" 
-                                        {{ old('category', $product->category) == 'brake-system' ? 'selected' : '' }}>
-                                        Brake System
-                                    </option>
-                                    <option value="electrical" 
-                                        {{ old('category', $product->category) == 'electrical' ? 'selected' : '' }}>
-                                        Electrical
-                                    </option>
-                                    <option value="suspension" 
-                                        {{ old('category', $product->category) == 'suspension' ? 'selected' : '' }}>
-                                        Suspension
-                                    </option>
-                                    <option value="transmission" 
-                                        {{ old('category', $product->category) == 'transmission' ? 'selected' : '' }}>
-                                        Transmission
-                                    </option>
-                                </select>
-                                <x-input-error :messages="$errors->get('category')" class="mt-2" />
-                            </div>
-                        </div>
-
-                        <!-- Right Column -->
-                        <div>
-                            <!-- Price -->
-                            <div class="mb-4">
-                                <x-input-label for="price" :value="__('Price (LKR)')" />
-                                <x-text-input id="price" class="block mt-1 w-full" type="number" 
-                                    name="price" value="{{ old('price', $product->price) }}" 
-                                    step="0.01" min="0" required />
-                                <x-input-error :messages="$errors->get('price')" class="mt-2" />
-                            </div>
-
-                            <!-- Stock Quantity -->
-                            <div class="mb-4">
-                                <x-input-label for="stock_quantity" :value="__('Stock Quantity')" />
-                                <x-text-input id="stock_quantity" class="block mt-1 w-full" type="number" 
-                                    name="stock_quantity" value="{{ old('stock_quantity', $product->stock_quantity) }}" 
-                                    min="0" required />
-                                <x-input-error :messages="$errors->get('stock_quantity')" class="mt-2" />
-                            </div>
-
-                            <!-- Product Image -->
-                            <div class="mb-4">
-                                <x-input-label for="product_image" :value="__('Product Image')" />
-                                <input id="product_image" type="file" name="product_image" 
-                                    class="block mt-1 w-full" accept="image/*" />
-                                <x-input-error :messages="$errors->get('product_image')" class="mt-2" />
-
-                                @if($product->product_image)
-                                    <div class="mt-4">
-                                        <p class="text-sm text-gray-600 mb-2">Current Image:</p>
-                                        <img src="{{ asset('storage/' . $product->product_image) }}" 
-                                             alt="{{ $product->name }}" 
-                                             class="h-48 w-48 object-cover rounded-lg shadow-md">
-                                    </div>
-                                @endif
-                            </div>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
 
-                    <!-- Submit Button -->
-                    <div class="flex items-center justify-end mt-4">
-                        <x-primary-button class="ms-4">
-                            {{ __('Update Product') }}
-                        </x-primary-button>
+                    {{-- Right Column --}}
+                    <div>
+                        {{-- Price --}}
+                        <div class="mb-4">
+                            <label for="price" class="block text-gray-700 font-bold mb-2">Price (LKR)</label>
+                            <input type="number" name="price" id="price" 
+                                   value="{{ old('price', $product->price) }}" 
+                                   step="0.01" min="0" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                                   required>
+                        </div>
+
+                        {{-- Stock Quantity --}}
+                        <div class="mb-4">
+                            <label for="stock_quantity" class="block text-gray-700 font-bold mb-2">Stock Quantity</label>
+                            <input type="number" name="stock_quantity" id="stock_quantity" 
+                                   value="{{ old('stock_quantity', $product->stock_quantity) }}" 
+                                   min="0" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                                   required>
+                        </div>
+
+                        {{-- Product Image --}}
+                        <div class="mb-4">
+                            <label for="product_image" class="block text-gray-700 font-bold mb-2">Product Image</label>
+                            <input type="file" name="product_image" id="product_image" 
+                                   accept="image/*" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            
+                            @if($product->product_image)
+                                <div class="mt-4">
+                                    <p class="text-sm text-gray-600 mb-2">Current Image:</p>
+                                    <img src="{{ asset('storage/' . $product->product_image) }}" 
+                                         alt="{{ $product->name }}" 
+                                         class="h-48 w-48 object-cover rounded-lg shadow-md">
+                                </div>
+                            @endif
+                        </div>
                     </div>
-                </form>
-            </div>
+                </div>
+
+                {{-- Submit Button --}}
+                <div class="flex justify-end mt-6">
+                    <button type="submit" 
+                            class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition duration-300">
+                        Update Product
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
-</x-app-layout>
+</div>
+@endsection

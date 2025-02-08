@@ -43,24 +43,24 @@
 
             <!-- Auth Links -->
             <div class="hidden sm:flex items-center space-x-4">
-                @guest
-                    <a href="{{ route('login') }}" 
-                       class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition duration-300 ease-in-out">
+                @auth
+                    <div class="flex items-center space-x-3">
+                        <span class="text-gray-700">Welcome, {{ Auth::user()->name }}</span>
+                        <form method="POST" action="{{ route('logout') }}" class="inline">
+                            @csrf
+                            <button type="submit" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition duration-300 ease-in-out">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                @else
+                    <a href="{{ route('login') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition duration-300 ease-in-out">
                         Login
                     </a>
-                    <a href="{{ route('register') }}" 
-                       class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 transition duration-300 ease-in-out">
+                    <a href="{{ route('register') }}" class="bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-2 rounded-md text-sm font-medium transition duration-300 ease-in-out">
                         Register
                     </a>
-                @else
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" 
-                                class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition duration-300 ease-in-out">
-                            Logout
-                        </button>
-                    </form>
-                @endguest
+                @endauth
             </div>
 
             <!-- Mobile menu button -->
@@ -92,6 +92,13 @@
                 Products
             </a>
             @auth
+                @if(Auth::user()->role === 'admin')
+                    <a href="{{ route('admin.dashboard') }}" 
+                       class="block text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium
+                       {{ request()->routeIs('admin.*') ? 'text-indigo-600' : '' }}">
+                        Admin Dashboard
+                    </a>
+                @endif
                 <a href="{{ route('cart.index') }}" 
                    class="block text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium
                    {{ request()->routeIs('cart.*') ? 'text-indigo-600' : '' }}">
@@ -102,32 +109,25 @@
                    {{ request()->routeIs('orders.*') ? 'text-indigo-600' : '' }}">
                     My Orders
                 </a>
-                @if(Auth::user()->role === 'admin')
-                    <a href="{{ route('admin.dashboard') }}" 
-                       class="block text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium
-                       {{ request()->routeIs('admin.*') ? 'text-indigo-600' : '' }}">
-                        Admin Dashboard
-                    </a>
-                @endif
-            @endauth
-            @guest
+                <div class="px-3 py-2">
+                    <span class="block text-gray-700 font-medium mb-2">Welcome, {{ Auth::user()->name }}</span>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="w-full text-left text-gray-700 hover:text-indigo-600 py-2 text-base font-medium transition duration-300 ease-in-out">
+                            Logout
+                        </button>
+                    </form>
+                </div>
+            @else
                 <a href="{{ route('login') }}" 
                    class="block text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium">
                     Login
                 </a>
                 <a href="{{ route('register') }}" 
-                   class="block text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium">
+                   class="block bg-indigo-600 text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-base font-medium">
                     Register
                 </a>
-            @else
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" 
-                            class="block w-full text-left text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium">
-                        Logout
-                    </button>
-                </form>
-            @endguest
+            @endauth
         </div>
     </div>
 </nav>
